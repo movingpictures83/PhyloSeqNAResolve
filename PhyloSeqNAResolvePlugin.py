@@ -17,11 +17,12 @@ class PhyloSeqNAResolvePlugin:
     def run(self):
         for i in range(len(self.contents)):
           # First, change species to genus and species
-          if (len(self.contents[i]) > 7 and self.contents[i][7] != "\"NA\"" and (not self.contents[i][7].endswith('unclassified\"'))):
+          if (len(self.contents[i]) > 7 and self.contents[i][7] != "\"NA\"" and (not self.contents[i][7].endswith('unclassified\"')) and (not self.contents[i][7].startswith('\"uncultured'))):
              self.contents[i][7] = '\"' + unquote(self.contents[i][6])+" "+unquote(self.contents[i][7]) + '\"'
           else:  # Species is NA.  Go back to the first position that is not
              pos = self.N-1
-             while (self.contents[i][pos] == "\"NA\"" or self.contents[i][pos].endswith('unclassified\"')):
+             while (self.contents[i][pos] == "\"NA\"" or self.contents[i][pos].endswith('unclassified\"') or
+                      self.contents[i][pos].startswith('\"uncultured')):
                 pos -= 1
              # pos is at first non-NA spot
              if (pos == 0):
